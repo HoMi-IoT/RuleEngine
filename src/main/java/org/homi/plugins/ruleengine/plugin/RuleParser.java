@@ -2,6 +2,7 @@ package org.homi.plugins.ruleengine.plugin;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -15,12 +16,22 @@ public class RuleParser {
 	private RuleParser() {}
 	
 	public static IRule parse(String rule) throws InternalPluginException {
+		System.out.println("***-----****PARSING RULE: " + rule);
 		try {
 			var lines = rule.trim().split("\n");
+			System.out.println("***-----****Lines: " + Arrays.toString(lines));
 			if(lines[0].startsWith("between ")) {
+				System.out.println("***-----**** time constraint");
 				return new Rule(rule, parseTimeRange(lines[0]), parseConditions(lines[1]), parseAction(lines[2]), parseRestTime(lines[3]) );
 			}else {
-				return new Rule(rule, parseConditions(lines[0]), parseAction(lines[1]), parseRestTime(lines[2]) );
+				System.out.println("***-----**** no time constraint");
+				var conds = parseConditions(lines[0]);
+				System.out.println("***-----**** PARSED CONDITIONS");
+				var a = parseAction(lines[1]);
+				System.out.println("***-----**** PARSED ACTION");
+				var rt = parseRestTime(lines[2]);
+				System.out.println("***-----**** PARSED REST TIME");
+				return new Rule(rule, conds, a, rt );
 			}
 		}catch (Exception e) {
 			throw new InternalPluginException("invalid rule definition", e);

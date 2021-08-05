@@ -13,13 +13,19 @@ public class NumericCondition extends Condition {
 	
 	@Override
 	public boolean isSatisfiedBy(Object currentValue) {
+		double cv;
+		if(currentValue instanceof String) {
+			cv = Double.parseDouble((String)currentValue);
+		}else {
+			cv= (double) currentValue;
+		}
 		switch(result) {
 		case GREATER_THAN:
-			return (Double) currentValue > (Double) this.getComparitorValue();
+			return cv > (Double) this.getComparitorValue();
 		case LESS_THAN:
-			return (Double) currentValue < (Double) this.getComparitorValue();
+			return cv < (Double) this.getComparitorValue();
 		default:
-			return (Double) currentValue == (Double) this.getComparitorValue();
+			return cv == (Double) this.getComparitorValue();
 		}
 	}
 }

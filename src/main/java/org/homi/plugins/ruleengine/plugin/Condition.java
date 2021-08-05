@@ -18,6 +18,9 @@ public class Condition {
 	}
 	
 	public boolean isSatisfiedBy(Object currentValue) {
+		System.out.println("++++++++CURRENT VALUE IS" + currentValue);
+		System.out.println("++++++++COMP VALUE IS" + this.comparitorValue);
+		System.out.println("currentValue.equals(this.comparitorValue): " + currentValue.equals(this.comparitorValue));
 		return currentValue.equals(this.comparitorValue);
 	}
 	

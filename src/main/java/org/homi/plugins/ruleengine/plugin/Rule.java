@@ -78,10 +78,17 @@ public class Rule implements IRule {
 	
 	@Override
 	public boolean evaluate() {
-		if( this.state != State.REMOVED && this.state == State.READY && allConditionsSatisfied() && this.timeRange!=null && this.timeRange.isSatisfied() ) {
+		System.out.println("evaluating rule: "+this.text);
+		if( this.state != State.REMOVED && this.state == State.READY && allConditionsSatisfied() && (this.timeRange==null || this.timeRange.isSatisfied()) ) {
+
+			System.out.println("-+-+-+-+-+-+-+-+-+--+-+-+-+-+-+-+-+--+-+-+-passed EVAL");
 			this.trigger();
+			System.out.println("-+-+-+-+-+-+-+-+-+--+-+-+-+-+-+-+-+--+-+-+-rule triggered");
 			this.state = State.SUSPENDED;
-			TimeService.scheduleTask(()->{if(this.state!= State.REMOVED) this.state = State.READY;}, this.restTime);
+			TimeService.scheduleTask(()->{if(this.state!= State.REMOVED) this.state = State.READY; 
+
+			System.out.println("-+-+-+-+-+-+-+-+-+--+-+-+-+-+-+-+-+--+-+-+-callback to remove suspention triggered");
+			}, this.restTime);
 			return true;
 		}
 		return false;
